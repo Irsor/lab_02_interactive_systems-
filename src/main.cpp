@@ -14,10 +14,15 @@ int main(void)
 
     /* Initialize the library */
     if (!glfwInit())
+    {
         return -1;
+    }
+
+    float width = 640;
+    float height = 480;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -29,7 +34,9 @@ int main(void)
 
     /* Initialize GLAD */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
         return -1;
+    }
 
     /* Initialize ImGui */
     IMGUI_CHECKVERSION();
@@ -40,14 +47,32 @@ int main(void)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 460 core");
 
+    bool checkBoxValue = false;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* ImGui Frame */
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
+
+        ImGui::SetNextWindowSize(ImVec2(width, height));
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+
         ImGui::NewFrame();
-        ImGui::ShowDemoWindow();
+        ImGui::Begin("My Window", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+
+        ImGui::SetWindowSize(ImVec2(640, 480));
+        ImGui::SetWindowPos(ImVec2(0, 0));
+
+
+        ImGui::SetCursorPos(ImVec2(100, (480 - 60) / 2));
+        if (ImGui::Button("My Favorite Button", ImVec2(80, 60))) 
+        {
+            std::cout << "AYAYAYAYAYA" << std::endl;
+        } 
+
+        ImGui::End();
         ImGui::Render();
 
         /* Render here */
